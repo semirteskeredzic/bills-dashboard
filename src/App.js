@@ -1,16 +1,14 @@
-import logo from './logo.svg';
 import './App.css';
-import AddBill from './components/AddBill';
 import UnpaidBillsList from './components/UnpaidBillsList';
-import Login from './components/Login';
+// import AddBill from './components/AddBill';
+// import UnpaidBillsList from './components/UnpaidBillsList';
 
 function App() {
   return (
-    <div>
-      <Login />
-      {/* <AddBill />
-      <UnpaidBillsList/> */}
-    </div>
+      <div>
+      <h1>Home</h1>
+      <UnpaidBillsList />
+      </div>
   );
 }
 
