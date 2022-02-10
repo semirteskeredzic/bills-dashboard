@@ -2,11 +2,8 @@ import React, { useState } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
 import Spinner from 'react-bootstrap/Spinner'
-import { userContext } from '../userContext';
 
 const LoginComponent = () => {
-
-    
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -35,7 +32,7 @@ const LoginComponent = () => {
 
 
     return (
-        <userContext.Provider value={user}>
+        <div>
             <div className="flex items-center justify-center min-h-screen bg-gray-100">
                 <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 flex flex-col">
                     <h1 className="font-bold mb-5 text-gray-800 text-center">Login</h1>
@@ -53,7 +50,7 @@ const LoginComponent = () => {
                     </button>
                 </form>
             </div>
-        </userContext.Provider>
+        </div>
     )
 }
 
