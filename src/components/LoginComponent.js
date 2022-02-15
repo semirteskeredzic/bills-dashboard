@@ -27,7 +27,7 @@ const LoginComponent = () => {
         setLoading(true)
         e.preventDefault()
         let payload = {email: email, password: password}
-        axios.post('https://billsapi.onrender.com/login', payload).then(res => res.status === 200 ? (setLoading(false), navigate('/')) : navigate('/register'))
+        axios.post('http://localhost:8000/login', payload).then(res => res.status === 200 ? (setLoading(false), navigate('/')) : navigate('/register'))
     }   
 
 
