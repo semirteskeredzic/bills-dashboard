@@ -3,32 +3,15 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { BrowserRouter, Routes, Route } from "react-router-dom"
-import LoginComponent from './components/LoginComponent';
-import RegisterComponent from './components/RegisterComponent';
+import { BrowserRouter } from "react-router-dom"
 import 'bootstrap/dist/css/bootstrap.min.css';
-import UserComponent from './components/UserComponent';
-import UnpaidBillsList from './components/UnpaidBillsList';
-import PaidBillsList from './components/PaidBillsList';
-import Navigation from './components/Navigation';
-import Dashboard from './components/Dashboard';
 
 
 ReactDOM.render(
   <React.StrictMode>
       <BrowserRouter>
-          <Navigation />
-          <Routes>
-            <Route path="/" element={<App />} />
-            <Route path="login" element={<LoginComponent/>} />
-            <Route path="register" element={<RegisterComponent/>} />
-            <Route path="/user" element={<UserComponent/>} />
-            <Route path="/unpaidbills" element={<UnpaidBillsList/>} />
-            <Route path="/paidbills" element={<PaidBillsList/>} />
-            <Route path="/dashboard" element={<Dashboard/>} />
-          </Routes>
+        <App />
       </BrowserRouter>
-    
   </React.StrictMode>,
   document.getElementById('root')
 );
