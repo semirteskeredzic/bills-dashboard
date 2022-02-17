@@ -17,7 +17,7 @@ const LoginComponent = () => {
         e.preventDefault()
         let payload = {email: email, password: password}
         axios.post(`${process.env.REACT_APP_API_URL}/login`, payload)
-        .then(res => res.status === 200 ? (Cookies.set('user', res.data.userId), setLoading(false), navigate('/')) : navigate('/register'))
+        .then(res => res.status === 200 ? (Cookies.set('user', res.data.userId), localStorage.setItem('user', res.data.userId), setLoading(false), navigate('/dashboard')) : navigate('/'))
     }   
 
     return (

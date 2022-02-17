@@ -11,6 +11,7 @@ import UserComponent from './components/UserComponent';
 import UnpaidBillsList from './components/UnpaidBillsList';
 import PaidBillsList from './components/PaidBillsList';
 import Navigation from './components/Navigation';
+import Dashboard from './components/Dashboard';
 
 
 ReactDOM.render(
@@ -24,6 +25,7 @@ ReactDOM.render(
             <Route path="/user" element={<UserComponent/>} />
             <Route path="/unpaidbills" element={<UnpaidBillsList/>} />
             <Route path="/paidbills" element={<PaidBillsList/>} />
+            <Route path="/dashboard" element={<Dashboard/>} />
           </Routes>
       </BrowserRouter>
     

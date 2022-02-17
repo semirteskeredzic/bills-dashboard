@@ -1,10 +1,23 @@
 import { useRef, useState, useEffect } from "react"
 import { Link } from "react-router-dom"
-import { MenuIcon, XIcon } from '@heroicons/react/outline'
+import { LogoutIcon, MenuIcon, XIcon } from '@heroicons/react/outline'
+import { useNavigate } from "react-router-dom"
 
 const Navigation = () => {
 
     const [isOpen, setIsOpen] = useState(false)
+    const [loggedIn, setLoggedIn] = useState(false)
+
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        const userLoggedIn = localStorage.getItem('user')
+        if(userLoggedIn !== null) setLoggedIn(true)
+
+        return() => {
+          setLoggedIn(() => false)
+        }
+    },[loggedIn])
 
     const sidebarRef = useRef()
     const linkRef = useRef()
@@ -43,6 +56,11 @@ const Navigation = () => {
         setIsOpen(!isOpen)
     }
 
+    const logOut = () => {
+      localStorage.removeItem('user')
+      navigate('/')
+    }
+
     return (
         <nav className="bg-gray-300 p-4 flex w-full justify-end md:justify-between">
             <section className="hidden md:block">
@@ -50,10 +68,18 @@ const Navigation = () => {
                 <Link className="mx-5  p-2 no-underline text-gray-700 hover:text-blue-500" to="/paidbills">Paid Bills</Link>
                 <Link className="mx-5  p-2 no-underline text-gray-700 hover:text-blue-500" to="/unpaidbills">Unpaid Bills</Link>
             </section>
+            {loggedIn ? 
             <section className="order-last hidden md:block">
-                    <Link className="mx-5  p-2 no-underline text-gray-700 hover:text-blue-500" to="/login">Login</Link>
-                    <Link className="mx-5  p-2 no-underline text-gray-700 hover:text-blue-500" to="/register">Register</Link>
+              <button className="mx-5  p-2 no-underline text-gray-700 hover:text-blue-500" onClick={() => logOut()}>
+                <LogoutIcon className="h-7 w-7" />
+              </button>
             </section>
+            :
+            <section className="order-last hidden md:block">
+              <Link className="mx-5  p-2 no-underline text-gray-700 hover:text-blue-500" to="/login">Login</Link>
+              <Link className="mx-5  p-2 no-underline text-gray-700 hover:text-blue-500" to="/register">Register</Link>
+            </section>
+            }
             <button className="md:hidden order-last flex" onClick={openSidebar}>
                 {isOpen ? <XIcon className="h-7 w-7 text-blue-500" /> :
                 <MenuIcon className="h-7 w-7 text-blue-500" />}
