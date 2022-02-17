@@ -4,7 +4,7 @@ import { MenuIcon, XIcon } from '@heroicons/react/outline'
 
 const Navigation = () => {
 
-    const[isOpen, setIsOpen] = useState(false)
+    const [isOpen, setIsOpen] = useState(false)
 
     const sidebarRef = useRef()
     const linkRef = useRef()
@@ -51,8 +51,8 @@ const Navigation = () => {
                 <Link className="mx-5  p-2 no-underline text-gray-700 hover:text-blue-500" to="/unpaidbills">Unpaid Bills</Link>
             </section>
             <section className="order-last hidden md:block">
-                <Link className="mx-5  p-2 no-underline text-gray-700 hover:text-blue-500" to="/login">Login</Link>
-                <Link className="mx-5  p-2 no-underline text-gray-700 hover:text-blue-500" to="/register">Register</Link>
+                    <Link className="mx-5  p-2 no-underline text-gray-700 hover:text-blue-500" to="/login">Login</Link>
+                    <Link className="mx-5  p-2 no-underline text-gray-700 hover:text-blue-500" to="/register">Register</Link>
             </section>
             <button className="md:hidden order-last flex" onClick={openSidebar}>
                 {isOpen ? <XIcon className="h-7 w-7 text-blue-500" /> :

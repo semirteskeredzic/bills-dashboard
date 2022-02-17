@@ -18,7 +18,7 @@ const RegisterComponent = () => {
             email: email,
             password: password
         }
-        axios.post('https://billsapi.onrender.com/register', payload).then(res => res.status === 201 ? (setLoading(false), navigate("/login")) : null)
+        axios.post(`${process.env.REACT_APP_API_URL}/register`, payload).then(res => res.status === 201 ? (setLoading(false), navigate("/login")) : null)
     }
 
     return (

@@ -8,13 +8,12 @@ import UnpaidBillsList from './components/UnpaidBillsList';
 function App() {
 
   return (
-      <div>
-      <h1>Home</h1>
-      <CreateBill />
-      <div className="flex">
-        <UnpaidBillsList />
-        <PaidBillsList />
-      </div>
+      <div className="mt-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <CreateBill />
+          <UnpaidBillsList />
+          <PaidBillsList />
+        </div>
       </div>
   );
 }

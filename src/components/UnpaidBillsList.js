@@ -9,7 +9,6 @@ const UnpaidBillsList = () => {
     axios.defaults.withCredentials = true
     const [payLoading, setPayLoading] = useState(false)
     const [userCookie, setUserCookie] = useState()
-    const [data, setData] = useState()
 
     useEffect(() => {
         const initialCookie = Cookies.get('user')
@@ -17,38 +16,37 @@ const UnpaidBillsList = () => {
         setUserCookie(cookie)
     },[])
 
-    // const [{ data, loading, error }, refetch] = useAxios(
-    //     'http://localhost:8000/unpaidbills', {userId: userCookie}, {
-    //         withCredentials: true,
-    //         headers: {'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json'
-    // }})
-
-    axios.get('http://localhost:8000/unpaidbills', {
-        params: {
-            userId: userCookie
+    const [{ data, loading, error }, refetch] = useAxios(
+        {
+            url: `${process.env.REACT_APP_API_URL}/unpaidbills`,
+            params: { userId: userCookie},
         },
-        withCredentials: true
-    }).then(res => setData(res))
+        {
+            withCredentials: true,
+            headers: {'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json'}
+        })
 
-    // if (loading) return <Spinner animation="border" role="status" />
-    // if (error) return <div>Error</div>
+    
 
-    // const payBill = (prop) => {
-    //     setPayLoading(true)
-    //     axios.put(`http://localhost:8000/bills/${prop._id}`, {paid: true}).then(res => res.status === 200 ? (console.log('success',res), setPayLoading(false), refetch()): console.log(res)).catch(err => console.log(err))
-    // }
+    if (loading) return <Spinner animation="border" role="status" />
+    if (error) return <div>Error</div>
+
+    const payBill = (prop) => {
+        setPayLoading(true)
+        axios.put(`${process.env.REACT_APP_API_URL}/bills/${prop._id}`, {paid: true}).then(res => res.status === 200 ? (console.log('success',res), setPayLoading(false), refetch()): console.log(res)).catch(err => console.log(err))
+    }
 
     return (
-        <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-2/4">
-            {/* <button className="bg-blue-500 shadow-sm rounded hover:bg-blue-600 text-white my-4 py-2 px-4" onClick={refetch}>Refresh</button> */}
+        <div className="p-3">
+            <button className="bg-blue-500 shadow-sm rounded hover:bg-blue-600 text-white my-4 py-2 px-4" onClick={refetch}>Refresh</button>
             <h1>UNPAID BILLS</h1>
-            {data?.data.map(bill => (
+            {data?.map(bill => (
                <ul className="rounded shadow-sm border border-gray-200 p-2 my-5" key={bill._id}>
                    <li>{bill.name}</li>
                    <li>{bill.month}</li>
                    <li>{bill.year}</li>
                    <li>{bill.paid}</li>
-                   {/* <button onClick={() => payBill(bill)}>
+                   <button onClick={() => payBill(bill)}>
                         {payLoading ? 
                             <Spinner animation="border" role="status">
                             <span className="visually-hidden">Paying...</span>
@@ -56,7 +54,7 @@ const UnpaidBillsList = () => {
                         :
                             'Pay Bill'
                         }
-                    </button> */}
+                    </button>
                </ul>
            ))}
         </div>

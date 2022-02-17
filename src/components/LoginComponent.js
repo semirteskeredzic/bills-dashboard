@@ -2,34 +2,23 @@ import React, { useState } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
 import Spinner from 'react-bootstrap/Spinner'
+import Cookies from 'js-cookie';
 
 const LoginComponent = () => {
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [loading, setLoading] = useState(false)
-    // const [user, setUser] = useState()
 
     let navigate = useNavigate()
-
-    // function validateUser(res) {
-    //     return new Promise(function(resolve, reject) {
-    //         if(res.status === 200) {
-    //             setUser(res.data)
-    //             resolve(user)
-    //         } else {
-    //             return reject
-    //         }
-    //     });
-    // }
 
     const loginUser = (e) => {
         setLoading(true)
         e.preventDefault()
         let payload = {email: email, password: password}
-        axios.post('http://localhost:8000/login', payload).then(res => res.status === 200 ? (setLoading(false), navigate('/')) : navigate('/register'))
+        axios.post(`${process.env.REACT_APP_API_URL}/login`, payload)
+        .then(res => res.status === 200 ? (Cookies.set('user', res.data.userId), setLoading(false), navigate('/')) : navigate('/register'))
     }   
-
 
     return (
         <div>

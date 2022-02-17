@@ -1,20 +1,33 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import useAxios from 'axios-hooks'
 import Spinner from 'react-bootstrap/esm/Spinner'
+import Cookies from 'js-cookie'
 
 const PaidBillsList = () => {
 
+    const [userCookie, setUserCookie] = useState()
+
+    useEffect(() => {
+        const initialCookie = Cookies.get('user')
+        const cookie = initialCookie.match(/(?:"[^"]*"|^[^"]*$)/)[0].replace(/"/g, "")
+        setUserCookie(cookie)
+    },[])
+
     const [{data, loading, error}, refetch] = useAxios(
-        'http://localhost:8000/paidbills',{
+        {
+            url: `${process.env.REACT_APP_API_URL}/paidbills`,
+            params: {userId: userCookie}
+        },
+        {
             withCredentials: true,
             headers: {'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json'
-    }})
+        }})
 
     if (loading) return <Spinner animation="border" role="status" />
     if (error) return <div>Error</div>
 
     return(
-        <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-2/4">
+        <div className="p-3">
             <button className="bg-blue-500 shadow-sm rounded hover:bg-blue-600 text-white my-4 py-2 px-4" onClick={refetch}>Refresh</button>
             <h1>PAID BILLS</h1>
             {data?.map(bill => (

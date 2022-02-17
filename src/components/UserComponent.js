@@ -14,7 +14,7 @@ const UserComponent = () => {
     },[searchParams])
 
     const [{ data, loading, error }, refetch] = useAxios(
-        `http://localhost:8000/user/${user}`,{
+        `${process.env.REACT_APP_API_URL}/user/${user}`,{
             withCredentials: true,
             headers: {'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json'
     }})
