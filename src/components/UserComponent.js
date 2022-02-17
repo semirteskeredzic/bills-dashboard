@@ -8,9 +8,9 @@ const UserComponent = () => {
     const [user, setUser] = useState()
     
     useEffect(() => {
+        setSearchParams('')
         const userParam = searchParams.get("user")
         setUser(userParam)
-
     },[searchParams])
 
     const [{ data, loading, error }, refetch] = useAxios(
