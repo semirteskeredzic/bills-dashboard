@@ -4,11 +4,10 @@ import useAxios from 'axios-hooks';
 import Spinner from 'react-bootstrap/esm/Spinner';
 
 const UserComponent = () => {
-    const [searchParams, setSearchParams] = useSearchParams();
+    const [searchParams] = useSearchParams();
     const [user, setUser] = useState()
     
     useEffect(() => {
-        setSearchParams('')
         const userParam = searchParams.get("user")
         setUser(userParam)
     },[searchParams])
