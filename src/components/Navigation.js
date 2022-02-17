@@ -1,23 +1,10 @@
 import { useRef, useState, useEffect } from "react"
 import { Link } from "react-router-dom"
 import { LogoutIcon, MenuIcon, XIcon } from '@heroicons/react/outline'
-import { useNavigate } from "react-router-dom"
 
-const Navigation = () => {
+const Navigation = ({user, logout}) => {
 
     const [isOpen, setIsOpen] = useState(false)
-    const [loggedIn, setLoggedIn] = useState(false)
-
-    const navigate = useNavigate()
-
-    useEffect(() => {
-        const userLoggedIn = localStorage.getItem('user')
-        if(userLoggedIn !== null) setLoggedIn(true)
-
-        return() => {
-          setLoggedIn(() => false)
-        }
-    },[loggedIn])
 
     const sidebarRef = useRef()
     const linkRef = useRef()
@@ -38,27 +25,14 @@ const Navigation = () => {
               document.removeEventListener("mousedown", listener);
               document.removeEventListener("touchstart", listener);
             };
-          },
-          // Add ref and handler to effect dependencies
-          // It's worth noting that because the passed-in handler is a new ...
-          // ... function on every render that will cause this effect ...
-          // ... callback/cleanup to run every render. It's not a big deal ...
-          // ... but to optimize you can wrap handler in useCallback before ...
-          // ... passing it into this hook.
-          [ref, handler]
-        );
-      }
+          },[ref, handler])
+        }
 
     useOnClickOutside(sidebarRef, () => setIsOpen(false))
     useOnClickOutside(linkRef, () => setIsOpen(false))
 
     const openSidebar = () => {
         setIsOpen(!isOpen)
-    }
-
-    const logOut = () => {
-      localStorage.removeItem('user')
-      navigate('/')
     }
 
     return (
@@ -68,9 +42,9 @@ const Navigation = () => {
                 <Link className="mx-5  p-2 no-underline text-gray-700 hover:text-blue-500" to="/paidbills">Paid Bills</Link>
                 <Link className="mx-5  p-2 no-underline text-gray-700 hover:text-blue-500" to="/unpaidbills">Unpaid Bills</Link>
             </section>
-            {loggedIn ? 
+            {user ? 
             <section className="order-last hidden md:block">
-              <button className="mx-5  p-2 no-underline text-gray-700 hover:text-blue-500" onClick={() => logOut()}>
+              <button className="mx-5  p-2 no-underline text-gray-700 hover:text-blue-500" onClick={() => logout()}>
                 <LogoutIcon className="h-7 w-7" />
               </button>
             </section>
@@ -90,8 +64,18 @@ const Navigation = () => {
                 <Link ref={linkRef} className="mx-5  p-2 no-underline text-gray-200 hover:text-indigo-200" to="/paidbills">Paid Bills</Link>
                 <Link ref={linkRef} className="mx-5  p-2 no-underline text-gray-200 hover:text-indigo-200" to="/unpaidbills">Unpaid Bills</Link>
                 <hr />
-                <Link ref={linkRef} className="mx-5  p-2 no-underline text-gray-200  hover:text-indigo-200" to="/login">Login</Link>
-                <Link ref={linkRef} className="mx-5  p-2 no-underline text-gray-200 hover:text-indigo-200" to="/register">Register</Link>
+                {user ?
+                  <>
+                    <button className="mx-5  p-2 no-underline text-gray-700 hover:text-blue-500" onClick={() => logout()}>
+                    <LogoutIcon className="h-7 w-7" />
+                    </button>
+                  </>
+                  :
+                  <>
+                    <Link ref={linkRef} className="mx-5  p-2 no-underline text-gray-200  hover:text-indigo-200" to="/login">Login</Link>
+                    <Link ref={linkRef} className="mx-5  p-2 no-underline text-gray-200 hover:text-indigo-200" to="/register">Register</Link>
+                  </>
+                }
             </section>
         </nav>
     )
