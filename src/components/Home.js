@@ -1,10 +1,6 @@
-import React, {useState} from 'react'
-import LoginComponent from './LoginComponent'
-import RegisterComponent from './RegisterComponent'
+import React from 'react'
 
 const Home = () => {
-
-    const [showLogin, setShowLogin] = useState(true)
 
     return (
         <div>

@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect } from "react"
 import { Link, useNavigate } from "react-router-dom"
-import { LogoutIcon, MenuIcon, XIcon } from '@heroicons/react/outline'
+import { MenuIcon, XIcon } from '@heroicons/react/outline'
 import logo from '../Images/AtfeeLogo.png'
 
 const Navigation = ({user, logout, login, signup}) => {
