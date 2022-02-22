@@ -25,8 +25,8 @@ const LoginComponent = () => {
 
     return (
             <div>
-                <div className="flex items-center justify-center min-h-screen bg-gray-100">
-                    <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 flex flex-col">
+                <div className="flex items-center justify-center min-h-screen">
+                    <form className="bg-white shadow-lg rounded px-8 pt-6 pb-8 mb-4 flex flex-col w-4/5 md:w-1/2 lg:w-5/12">
                         <h1 className="font-bold mb-5 text-gray-800 text-center">Login</h1>
                         <label className="font-bold mb-2 text-gray-800">Email</label>
                         <input className="w-full appearance-none shadow-sm border border-gray-200 p-2 focus:outline-none focus:border-gray-500 my-2 rounded-lg" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
