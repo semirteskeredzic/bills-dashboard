@@ -37,9 +37,18 @@ function App() {
     navigate('/')
   }
 
+  const logInUser = () => {
+    navigate('/login')
+  }
+
+  const signUpUser = () => {
+    setCurrentUser(undefined)
+    navigate('/register')
+  }
+
   return (
       <div>       
-          <Navigation user={currentUser} logout={logOutUser} />
+          <Navigation user={currentUser} logout={logOutUser} login={logInUser} signup={signUpUser} />
           <div className="container mt-3">
             <UserContext.Provider value={updateUser}>
               <Routes>

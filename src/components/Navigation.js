@@ -1,10 +1,12 @@
 import { useRef, useState, useEffect } from "react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { LogoutIcon, MenuIcon, XIcon } from '@heroicons/react/outline'
+import logo from '../Images/AtfeeLogo.png'
 
-const Navigation = ({user, logout}) => {
+const Navigation = ({user, logout, login, signup}) => {
 
     const [isOpen, setIsOpen] = useState(false)
+    const navigate = useNavigate()
 
     const sidebarRef = useRef()
     const linkRef = useRef()
@@ -35,49 +37,70 @@ const Navigation = ({user, logout}) => {
         setIsOpen(!isOpen)
     }
 
-    return (
-        <nav className="bg-gray-300 p-4 flex w-full justify-end md:justify-between">
-            <section className="hidden md:block">
-                <Link className="mx-5  p-2 no-underline text-gray-700 hover:text-blue-500" to="/">Home</Link>
+    const signUpUser = () => {
+      signup() 
+      setIsOpen(false)
+    }
+
+    const goHome = () => {
+      setIsOpen(false)
+      navigate('/')
+    }
+
+    return (<>
+        <section className={`${isOpen ? 'w-full h-full' : 'w-0 h-0'} t-0 absolute flex z-10 bg-slate-600 bg-opacity-50`}></section>
+        <nav className="p-2 flex w-full justify-end md:justify-between bg-white shadow-sm">
+          {user ? 
+            <>
+            <section className="hidden md:block self-center">
+                <Link className="mx-5  p-2 no-underline text-gray-700 hover:text-blue-500" to="/dashboard"><img className="w-32 mt-0 inline-block" src={logo} alt="logo" /></Link>
                 <Link className="mx-5  p-2 no-underline text-gray-700 hover:text-blue-500" to="/paidbills">Paid Bills</Link>
                 <Link className="mx-5  p-2 no-underline text-gray-700 hover:text-blue-500" to="/unpaidbills">Unpaid Bills</Link>
             </section>
-            {user ? 
-            <section className="order-last hidden md:block">
-              <button className="mx-5  p-2 no-underline text-gray-700 hover:text-blue-500" onClick={() => logout()}>
-                <LogoutIcon className="h-7 w-7" />
-              </button>
+            <section className="order-last hidden md:block self-center">
+              <Link className="mx-5  p-2 no-underline text-gray-700 hover:text-blue-500" onClick={() => logout()} to="/">Logout</Link>
             </section>
+            </>
             :
-            <section className="order-last hidden md:block">
-              <Link className="mx-5  p-2 no-underline text-gray-700 hover:text-blue-500" to="/login">Login</Link>
-              <Link className="mx-5  p-2 no-underline text-gray-700 hover:text-blue-500" to="/register">Register</Link>
+            <>
+            <section className="hidden md:block self-center">
+            <Link className="mx-5  p-2 no-underline text-gray-700 hover:text-blue-500" to="/"><img className="w-32 mt-0 inline-block" src={logo} alt="logo" /></Link>
             </section>
+            <section className="order-last hidden md:block">
+            <button className="bg-transparent text-md text-blue my-1 py-2 px-4" onClick={() => signup()}>Sign Up</button>
+              <button className="bg-blue-500 shadow-md rounded hover:bg-blue-600 text-md text-white my-1 py-2 px-4" onClick={() => login()}>Login</button>
+            </section>
+            </>
             }
-            <button className="md:hidden order-last flex" onClick={openSidebar}>
-                {isOpen ? <XIcon className="h-7 w-7 text-blue-500" /> :
-                <MenuIcon className="h-7 w-7 text-blue-500" />}
-                </button>
-            <section ref={sidebarRef} className={`flex flex-col h-full md:hidden ${isOpen ? 'w-60' : 'w-0'} fixed z-1 top-0 left-0 bg-slate-600 overflow-x-hidden duration-500`}>
-                <button onClick={openSidebar} className="t-0 r-0 pb-20 mt-3 mr-3"><XIcon className="h-8 w-8 float-right text-blue-200" /></button>
-                <Link ref={linkRef} className="mx-5  p-2 no-underline text-gray-200 hover:text-indigo-200" to="/">Home</Link>
-                <Link ref={linkRef} className="mx-5  p-2 no-underline text-gray-200 hover:text-indigo-200" to="/paidbills">Paid Bills</Link>
-                <Link ref={linkRef} className="mx-5  p-2 no-underline text-gray-200 hover:text-indigo-200" to="/unpaidbills">Unpaid Bills</Link>
-                <hr />
+            <Link className="m-0 m-auto p-2 no-underline text-gray-700 hover:text-blue-500 md:hidden" to="/"><img className="w-25 mt-0 inline-block" src={logo} alt="logo" /></Link>
+            <button className="md:hidden order-last flex self-center" onClick={openSidebar}>
+                <MenuIcon className="h-7 w-7 text-blue-500" />
+            </button>
+            <section ref={sidebarRef} className={`flex flex-col h-full md:hidden ${isOpen ? 'w-80' : 'w-0'} shadow-lg fixed z-20 top-0 right-0 bg-white overflow-x-hidden duration-500`}>
+                <button onClick={openSidebar} className="t-0 l-2 r-0 pb-11 mt-2 ml-3"><XIcon className="h-8 w-8 float-left text-blue-500" /></button>
                 {user ?
                   <>
-                    <button className="mx-5  p-2 no-underline text-gray-700 hover:text-blue-500" onClick={() => logout()}>
-                    <LogoutIcon className="h-7 w-7" />
-                    </button>
+                    <Link className="mx-5  p-2 no-underline text-gray-700 hover:text-blue-500" to="/dashboard"><img className="w-52 mt-0 mb-5 inline-block" src={logo} alt="logo" /></Link>
+                    <Link ref={linkRef} className="mx-5 p-2 no-underline text-blue hover:text-darken text-center text-xl" onClick={() => setIsOpen(false)} to="/dashboard">Dashboard</Link>
+                    <Link ref={linkRef} className="mx-5 p-2 no-underline text-blue hover:text-darken text-center text-xl" onClick={() => setIsOpen(false)}  to="/unpaidbills">Unpaid Bills</Link>
+                    <Link ref={linkRef} className="mx-5 p-2 no-underline text-blue hover:text-darken text-center text-xl" onClick={() => setIsOpen(false)}  to="/paidbills">Paid Bills</Link>
+                    
+                    <hr className="h-50 bg-transparent mb-0" />
+                    <hr />
+                    <button className="bg-transparent text-blue my-1 w-full text-base text-center" onClick={() => logout()}>Logout</button>
                   </>
                   :
                   <>
-                    <Link ref={linkRef} className="mx-5  p-2 no-underline text-gray-200  hover:text-indigo-200" to="/login">Login</Link>
-                    <Link ref={linkRef} className="mx-5  p-2 no-underline text-gray-200 hover:text-indigo-200" to="/register">Register</Link>
+                    <Link ref={linkRef} className="mx-5  p-2 no-underline text-gray-700 hover:text-blue-500" onClick={() =>  goHome()} to="/">Home</Link>
+                    <hr className="h-50 bg-transparent" />
+                    <hr />
+                    <button ref={linkRef} className="bg-blue-500 shadow-md rounded hover:bg-blue-600 text-md text-white mx-5 my-1 py-2 px-4" onClick={() => login()}>Login</button>
+                    <button ref={linkRef} className="bg-transparent text-md text-blue mx-5 my-1 py-2 px-4" onClick={() => signUpUser()}>Sign Up</button>
                   </>
                 }
             </section>
         </nav>
+        </>
     )
 }
 
