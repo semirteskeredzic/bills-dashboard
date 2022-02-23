@@ -74,6 +74,7 @@ const AddBill = ({returnToDefault}) => {
                         'Add'
                         }
                 </button>
+                <button className="w-full bg-transparent text-black" onClick={() => returnToDefault()}>Cancel</button>
             </form>
         </div>
     )

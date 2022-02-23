@@ -47,9 +47,9 @@ function App() {
   }
 
   return (
-      <div>       
+      <div className="bg-slate-50">       
           <Navigation user={currentUser} logout={logOutUser} login={logInUser} signup={signUpUser} />
-          <div className="container mt-3">
+          <div className="container">
             <UserContext.Provider value={updateUser}>
               <Routes>
                 <Route path="/" element={<Home />} />

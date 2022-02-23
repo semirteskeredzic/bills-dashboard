@@ -21,7 +21,8 @@ const CreateBill = () => {
     }
 
     return(
-        <div className="m-0 m-auto">
+        <div className="flex p-10 h-full justify-center">
+            <div className="self-center">
             {buttonVisible ?
                 <button 
                     onClick={startAddBill}
@@ -37,6 +38,7 @@ const CreateBill = () => {
                 </button> 
                 : null
             }
+            </div>
             {addBillVisible ? <AddBill returnToDefault={returnToDefault}  /> : null}
         </div>
     )
