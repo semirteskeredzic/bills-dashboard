@@ -3,7 +3,7 @@ import axios from 'axios'
 import useAxios from 'axios-hooks'
 import Spinner from 'react-bootstrap/esm/Spinner'
 import Cookies from 'js-cookie'
-import { PencilAltIcon, PencilIcon, RefreshIcon, TrashIcon } from '@heroicons/react/outline'
+import { PencilIcon, RefreshIcon, TrashIcon } from '@heroicons/react/outline'
 import { useNavigate } from 'react-router-dom'
 import { formatter } from '../currency'
 

@@ -13,6 +13,7 @@ const UnpaidBillsWidget = () => {
     const [payLoading, setPayLoading] = useState(false)
     const [userCookie, setUserCookie] = useState()
     const [modalDelete, setModalDelete] = useState(false)
+    const [currentItemForDeletion, setCurrentItemForDeletion] = useState()
 
     useEffect(() => {
         const initialCookie = Cookies.get('user')
@@ -41,10 +42,11 @@ const UnpaidBillsWidget = () => {
     }
 
     const deleteBill = (prop) => {
-        axios.delete(`${process.env.REACT_APP_API_URL}/bills/${prop._id}`).then(res => res.ok ? (console.log('Bill deleted'), refetch()) : console.log(res)).catch(err => console.error(err))
+        axios.delete(`${process.env.REACT_APP_API_URL}/bills/${prop._id}`).then(res => res.ok ? (console.log('Bill deleted'), refetch()) : console.log(res)).catch(err => console.error(err)).finally(setCurrentItemForDeletion(''))
     }
 
     const deleteModal = (prop) => {
+        setCurrentItemForDeletion(prop)
         setModalDelete(!modalDelete)
         // setCurrent
     }
@@ -96,7 +98,7 @@ const UnpaidBillsWidget = () => {
                             <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Are you sure you want to delete this bill?</h3>
                             <div className="flex flex-row justify-evenly">
                             <button type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:ring-gray-300 rounded-lg border border-gray-200 text-sm font-medium px-3 py-2 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-slate-200 dark:hover:bg-gray-600">No, cancel</button>
-                            <button type="button" class="text-white bg-blue-600 hover:bg-blue-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm inline-flex items-center px-3 py-2 text-center mr-2">
+                            <button onClick={() => deleteBill(currentItemForDeletion)} type="button" class="text-white bg-blue-600 hover:bg-blue-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm inline-flex items-center px-3 py-2 text-center mr-2">
                                 Yes, I'm sure
                             </button>
                             </div>
