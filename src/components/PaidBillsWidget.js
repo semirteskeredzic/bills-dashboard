@@ -2,15 +2,13 @@ import React, { useState, useEffect } from 'react'
 import useAxios from 'axios-hooks'
 import Spinner from 'react-bootstrap/esm/Spinner'
 import Cookies from 'js-cookie'
-import { useNavigate } from 'react-router-dom'
 import { RefreshIcon } from '@heroicons/react/outline'
+import { Link } from 'react-router-dom'
 import { formatter } from '../currency'
 
-const PaidBillsList = () => {
+const PaidBillsWidget = () => {
 
     const [userCookie, setUserCookie] = useState()
-
-    const navigate = useNavigate()
 
     useEffect(() => {
         const initialCookie = Cookies.get('user')
@@ -33,21 +31,21 @@ const PaidBillsList = () => {
 
     return(
         <div className="p-3 relative">
-            <div className="absolute right-2 top-0 justify-center align-middle flex"> 
-            <button className="my-4 py-2 px-4" onClick={refetch}><RefreshIcon className="w-7 hover:text-blue-700" /></button>
-            <button className="bg-blue-500 shadow-sm rounded hover:bg-blue-600 text-white my-4 py-2 px-4" onClick={() => navigate(-1)}>Back</button>
-            </div> 
+            <button className="my-4 py-2 px-4 right-2 top-0 absolute" onClick={refetch}><RefreshIcon className="w-7 hover:text-blue-700" /></button>
             <h1>Paid bills</h1>
-            {data?.map(bill => (
-               <ul className="rounded shadow-sm border border-gray-200 p-2 my-5" key={bill._id}>
+            {data?.slice(0,3).map(bill => (
+               <ul className="rounded shadow-sm border border-gray-200 p-2 my-4" key={bill._id}>
                    <li>Name: {bill.name}</li>
                    <li>Month: {bill.month}</li>
                    <li>Year: {bill.year}</li>
                    <li>Amount: {!isNaN(bill.amount) ? formatter.format(bill.amount) : 'Not a number'}</li>
                </ul>
            ))}
+            <div className="text-center pt-2">
+            {data?.length > 3 ? <Link className="no-underline text-center text-base text-black hover:text-blue-700" to="/paidbills">See More</Link> : null}
+           </div>
         </div>
     )
 }
 
-export default PaidBillsList
+export default PaidBillsWidget

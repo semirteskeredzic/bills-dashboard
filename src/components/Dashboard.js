@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import CreateBill from './CreateBill'
-import PaidBillsList from './PaidBillsList'
-import UnpaidBillsList from './UnpaidBillsList'
+import PaidBillsWidget from './PaidBillsWidget'
+import UnpaidBillsWidget from './UnpaidBillsWidget'
 
 const Dashboard = () => {
 
@@ -14,13 +14,20 @@ const Dashboard = () => {
 
 
     return (
-        <div className="mt-10">
+        <div className="mt-10 pb-11">
             {loggedIn 
             ? 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <section className="w-full md:h-[33.75rem] bg-white rounded-md shadow-md" >
                 <CreateBill />
-                <UnpaidBillsList />
-                <PaidBillsList />
+                </section>
+                <section className="w-full md:h-[33.75rem] bg-white rounded-md shadow-md">
+                <UnpaidBillsWidget />
+                </section>
+                <section className="w-full md:h-[33.75rem] bg-white rounded-md shadow-md">
+                <PaidBillsWidget />
+                </section>
+                
             </div>
             :
             <div>
