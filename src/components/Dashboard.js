@@ -12,7 +12,6 @@ const Dashboard = () => {
         if(userLoggedIn !== null) setLoggedIn(true)
     },[])
 
-
     return (
         <div className="mt-10 pb-11">
             {loggedIn 
