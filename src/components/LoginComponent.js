@@ -11,7 +11,7 @@ const LoginComponent = () => {
     const [password, setPassword] = useState('')
     const [loading, setLoading] = useState(false)
 
-    const updateuser = React.useContext(UserContext)
+    // const updateuser = React.useContext(UserContext)
 
     let navigate = useNavigate()
 
@@ -20,7 +20,7 @@ const LoginComponent = () => {
         e.preventDefault()
         let payload = {email: email, password: password}
         axios.post(`${process.env.REACT_APP_API_URL}/login`, payload)
-        .then(res => res.status === 200 ? (Cookies.set('user', res.data.userId), localStorage.setItem('user', res.data.userId), updateuser(),  setLoading(false),  navigate('/dashboard')) : navigate('/'))
+        .then(res => res.status === 200 ? (Cookies.set('user', res.data.userId), localStorage.setItem('user', res.data.userId),  setLoading(false),  navigate('/dashboard')) : navigate('/'))
     }   
 
     return (
