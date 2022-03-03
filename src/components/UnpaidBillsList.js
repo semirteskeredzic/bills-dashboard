@@ -1,44 +1,37 @@
-import React, {useEffect, useState} from 'react'
+import React, {useState} from 'react'
 import axios from 'axios'
 import useAxios from 'axios-hooks'
 import Spinner from 'react-bootstrap/esm/Spinner'
-import Cookies from 'js-cookie'
 import { PencilIcon, RefreshIcon, TrashIcon } from '@heroicons/react/outline'
 import { useNavigate } from 'react-router-dom'
 import { formatter } from '../currency'
+import Userfront from '@userfront/react'
 
 const UnpaidBillsList = () => {
 
     axios.defaults.withCredentials = true
     const [payLoading, setPayLoading] = useState(false)
-    const [userCookie, setUserCookie] = useState()
 
     const navigate = useNavigate()
-
-    useEffect(() => {
-        const initialCookie = Cookies.get('user')
-        const cookie = initialCookie.match(/(?:"[^"]*"|^[^"]*$)/)[0].replace(/"/g, "")
-        setUserCookie(cookie)
-    },[])
 
     const [{ data, loading, error }, refetch] = useAxios(
         {
             url: `${process.env.REACT_APP_API_URL}/unpaidbills`,
-            params: { userId: userCookie},
-        },
-        {
-            withCredentials: true,
-            headers: {'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json'}
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${Userfront.tokens.accessToken}`
+            }
         })
-
-    
 
     if (loading) return <Spinner animation="border" role="status" />
     if (error) return <div>Error</div>
 
     const payBill = (prop) => {
         setPayLoading(true)
-        axios.put(`${process.env.REACT_APP_API_URL}/bills/${prop._id}`, {paid: true}).then(res => res.status === 200 ? (console.log('success',res), setPayLoading(false), refetch()): console.log(res)).catch(err => console.log(err))
+        axios.put(`${process.env.REACT_APP_API_URL}/bills/${prop._id}`, {paid: true}, {headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${Userfront.tokens.accessToken}`
+        }}).then(res => res.status === 200 ? (console.log('success',res), setPayLoading(false), refetch()): console.log(res)).catch(err => console.log(err))
     }
 
     return (

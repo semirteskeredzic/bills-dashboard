@@ -1,27 +1,17 @@
-import React, { useEffect, useState } from 'react'
-import DatePicker from "react-datepicker"
-import "react-datepicker/dist/react-datepicker.css"
-import getMonth from 'date-fns/getMonth'
-import getYear from 'date-fns/getYear'
+import React, { useState } from 'react'
 import axios from 'axios'
-import Cookies from 'js-cookie'
 import Spinner from 'react-bootstrap/esm/Spinner'
+import Userfront from '@userfront/react'
+import ReactMonthPickerInput from 'react-month-picker-input'
+import 'react-month-picker-input/dist/react-month-picker-input.css'
 
-const AddBill = ({returnToDefault}) => {
+const AddBill = ({returnToDefault, refetch}) => {
 
-    const [startDate, setStartDate] = useState(new Date())
-    const [previousMonth, setPreviousMonth] = useState()
-    const [currentYear, setCurrentYear] = useState()
     const [name, setName] = useState()
     const [amount, setAmount] = useState()
-    const [userCookie, setUserCookie] = useState()
     const [loading, setLoading] = useState(false)
-
-    useEffect(() =>{
-        const initialCookie = Cookies.get('user')
-        const cookie = initialCookie.match(/(?:"[^"]*"|^[^"]*$)/)[0].replace(/"/g, "")
-        setUserCookie(cookie)
-    },[])
+    const [month, setMonth] = useState(new Date().getMonth() === 0 ? new Date().getMonth()+1 : new Date().getMonth())
+    const [year, setYear] = useState(new Date().getFullYear())
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -29,36 +19,35 @@ const AddBill = ({returnToDefault}) => {
         try {
             axios.post(`${process.env.REACT_APP_API_URL}/bills`, {
             name: name,
-            month: previousMonth,
-            year: currentYear,
+            month: month,
+            year: year,
             paid: false,
             amount: amount,
             arrival: true,
-            user: userCookie
-        }).then(res => res.status === 200 ? 
-            () => setName('') : alert('ERR')).finally(() => setLoading(false), returnToDefault())
+        }, { 
+            headers : {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${Userfront.tokens.accessToken}`
+        }}).then(res => res.status === 200 ? 
+            (() => setName(''), setLoading(false)) : alert('ERR')).finally(() => refetch(), returnToDefault())
         } catch(err) {
             console.error(err)
         }
     }
 
-    useEffect(() => {
-        const month = getMonth(startDate)-1
-        const year = getYear(startDate)
-        setPreviousMonth(month + 1)
-        setCurrentYear(year)
-    },[startDate])
-
     return(
         <div>
             <div className="m-6 flex flex-row justify-between w-full">
             <h4 className="inline-block">Period</h4>
-            <DatePicker 
-                selected={startDate} 
-                onChange={(date) => setStartDate(date)} 
-                dateFormat="MM yy"
-                className="ml-5 border-2"
-            />
+            <ReactMonthPickerInput
+                inputProps={{className: 'w-full'}}
+                year={new Date().getFullYear()}
+                month={new Date().getMonth()-1}
+                onChange={function(maskedValue, selectedYear, selectedMonth) {
+                    setMonth(parseInt(selectedMonth+1))
+                    setYear(parseInt(selectedYear))
+                }}
+                />
             </div>
             <form className="bg-white rounded px-8 pt-6 pb-8 mb-4">
             <label className="font-bold mb-2 text-gray-800">Bill Name</label>

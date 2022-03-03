@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import Spinner from 'react-bootstrap/esm/Spinner'
 import AddBill from './AddBill'
 
-const CreateBill = () => {
+const CreateBill = ({refetchunpaid}) => {
 
     const [buttonVisible, setButtonVisible] = useState(true)
     const [addBillVisible, setAddBillVisible] = useState(false)
@@ -39,7 +39,7 @@ const CreateBill = () => {
                 : null
             }
             </div>
-            {addBillVisible ? <AddBill returnToDefault={returnToDefault}  /> : null}
+            {addBillVisible ? <AddBill returnToDefault={returnToDefault} refetch={refetchunpaid}  /> : null}
         </div>
     )
 }

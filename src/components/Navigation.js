@@ -2,8 +2,9 @@ import { useRef, useState, useEffect } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { MenuIcon, XIcon } from '@heroicons/react/outline'
 import logo from '../Images/AtfeeLogo.png'
+import Userfront from '@userfront/react'
 
-const Navigation = ({user, logout, login, signup}) => {
+const Navigation = ({logout, login, signup}) => {
 
     const [isOpen, setIsOpen] = useState(false)
     const navigate = useNavigate()
@@ -50,15 +51,15 @@ const Navigation = ({user, logout, login, signup}) => {
     return (<>
         <section className={`${isOpen ? 'w-full h-full' : 'w-0 h-0'} t-0 absolute flex z-10 bg-slate-600 bg-opacity-50`}></section>
         <nav className="p-2 flex w-full justify-end md:justify-between bg-white shadow-sm">
-          {user ? 
+          {Userfront.tokens.accessToken ? 
             <>
             <section className="hidden md:block self-center">
-                <Link className="mx-5  p-2 no-underline text-gray-700 hover:text-blue-500" to="/dashboard"><img className="w-32 mt-0 inline-block" src={logo} alt="logo" /></Link>
+                <Link className="mx-5  p-2 no-underline text-gray-700 hover:text-blue-500 h-" to="/dashboard"><img className="w-32 mt-0 inline-block" src={logo} alt="logo" /></Link>
                 <Link className="mx-5  p-2 no-underline text-gray-700 hover:text-blue-500" to="/paidbills">Paid Bills</Link>
                 <Link className="mx-5  p-2 no-underline text-gray-700 hover:text-blue-500" to="/unpaidbills">Unpaid Bills</Link>
             </section>
             <section className="order-last hidden md:block self-center">
-              <Link className="mx-5  p-2 no-underline text-gray-700 hover:text-blue-500" onClick={() => logout()} to="/">Logout</Link>
+              <div className="mx-5  p-2 no-underline text-gray-700 hover:text-blue-500">{logout}</div>
             </section>
             </>
             :
@@ -78,7 +79,7 @@ const Navigation = ({user, logout, login, signup}) => {
             </button>
             <section ref={sidebarRef} className={`flex flex-col h-full md:hidden ${isOpen ? 'w-80' : 'w-0'} shadow-lg fixed z-20 top-0 right-0 bg-white overflow-x-hidden duration-500`}>
                 <button onClick={openSidebar} className="t-0 l-2 r-0 pb-11 mt-2 ml-3"><XIcon className="h-8 w-8 float-left text-blue-500" /></button>
-                {user ?
+                {Userfront.tokens.accessToken ?
                   <>
                     <Link className="mx-5  p-2 no-underline text-gray-700 hover:text-blue-500" to="/dashboard"><img className="w-52 mt-0 mb-5 inline-block" src={logo} alt="logo" /></Link>
                     <Link ref={linkRef} className="mx-5 p-2 no-underline text-blue hover:text-darken text-center text-xl" onClick={() => setIsOpen(false)} to="/dashboard">Dashboard</Link>
@@ -87,7 +88,7 @@ const Navigation = ({user, logout, login, signup}) => {
                     
                     <hr className="h-50 bg-transparent mb-0" />
                     <hr />
-                    <button className="bg-transparent text-blue my-1 w-full text-base text-center" onClick={() => logout()}>Logout</button>
+                    <div className="bg-transparent text-blue my-1 w-full text-base text-center">{logout}</div>
                   </>
                   :
                   <>

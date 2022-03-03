@@ -1,66 +1,57 @@
 import './App.css';
 import Home from './components/Home';
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Routes, Route } from "react-router-dom"
-import LoginComponent from './components/LoginComponent';
-import RegisterComponent from './components/RegisterComponent';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import UserComponent from './components/UserComponent';
 import UnpaidBillsList from './components/UnpaidBillsList';
 import PaidBillsList from './components/PaidBillsList';
 import Dashboard from './components/Dashboard';
 import Navigation from './components/Navigation'
-import AuthService from './services/auth.service';
 import { useNavigate } from 'react-router-dom'
+import Userfront from '@userfront/react'
 
-export const UserContext = React.createContext()
+
+Userfront.init('5nxgp7yb')
 
 function App() {
-  const [currentUser, setCurrentUser] = useState(undefined)
+
+  console.log(process.env.REACT_APP_LOGIN_FORM_TOOLID)
   const navigate = useNavigate()
-  
-  useEffect(() => {
-    const user = AuthService.getCurrentUser()
-    if(user) {
-      setCurrentUser(user)
-    }
-  },[])
 
-  const updateUser = () => {
-    const user = AuthService.getCurrentUser()
-    setCurrentUser(user)
-  }
+  const LoginForm = Userfront.build({
+    toolId: 'mrrnbd'
+  })
 
-  const logOutUser = () => {
-    AuthService.logout()
-    setCurrentUser(undefined)
-    navigate('/')
-  }
+  const SignupForm = Userfront.build({
+    toolId: 'nrradn'
+  })
+
+  const LogoutButton = Userfront.build({
+    toolId: 'dnnran'
+  });
 
   const logInUser = () => {
     navigate('/login')
   }
 
   const signUpUser = () => {
-    setCurrentUser(undefined)
     navigate('/register')
   }
 
   return (
-      <div className="bg-slate-50">       
-          <Navigation user={currentUser} logout={logOutUser} login={logInUser} signup={signUpUser} />
-          <div className="container">
-            <UserContext.Provider value={updateUser}>
+      <div className="bg-slate-50">
+          <Navigation logout={<LogoutButton />} login={logInUser} signup={signUpUser} />
+          <div className="container min-h-screen">
               <Routes>
                 <Route path="/" element={<Home />} />
-                <Route path="login" element={<LoginComponent />} />
-                <Route path="register" element={<RegisterComponent/>} />
+                <Route path="login" element={<div className="mt-40"><LoginForm /></div>} />
+                <Route path="register" element={<div className="mt-40"><SignupForm /></div>} />
                 <Route path="/user" element={<UserComponent/>} />
                 <Route path="/unpaidbills" element={<UnpaidBillsList/>} />
                 <Route path="/paidbills" element={<PaidBillsList/>} />
                 <Route path="/dashboard" element={<Dashboard/>} />
               </Routes>
-            </UserContext.Provider>
           </div>
       </div>
   );
