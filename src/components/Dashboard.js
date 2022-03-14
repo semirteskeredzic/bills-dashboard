@@ -36,7 +36,7 @@ const Dashboard = () => {
         <div className="mt-10 pb-11">
          {Userfront.tokens.accessToken 
             ? 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 px-10">
                 <section className="w-full md:h-[33.75rem] bg-white rounded-md shadow-md" >
                 <CreateBill refetchunpaid={unpaidRefetch} />
                 </section>

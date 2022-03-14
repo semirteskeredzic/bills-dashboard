@@ -50,7 +50,7 @@ const Navigation = ({logout, login, signup}) => {
 
     return (<>
         <section className={`${isOpen ? 'w-full h-full' : 'w-0 h-0'} t-0 absolute flex z-10 bg-slate-600 bg-opacity-50`}></section>
-        <nav className="p-2 flex w-full justify-end md:justify-between bg-white shadow-sm">
+        <nav className="p-10 flex w-full justify-end md:justify-between bg-transparent">
           {Userfront.tokens.accessToken ? 
             <>
             <section className="hidden md:block self-center">
@@ -59,13 +59,13 @@ const Navigation = ({logout, login, signup}) => {
                 <Link className="mx-5  p-2 no-underline text-gray-700 hover:text-blue-500" to="/unpaidbills">Unpaid Bills</Link>
             </section>
             <section className="order-last hidden md:block self-center">
-              <div className="mx-5  p-2 no-underline text-gray-700 hover:text-blue-500">{logout}</div>
+              <div className="p-2 no-underline text-gray-700 hover:text-blue-500">{logout}</div>
             </section>
             </>
             :
             <>
             <section className="hidden md:block self-center">
-            <Link className="mx-5  p-2 no-underline text-gray-700 hover:text-blue-500" to="/"><img className="w-32 mt-0 inline-block" src={logo} alt="logo" /></Link>
+            <Link className="p-2 no-underline text-gray-700 hover:text-blue-500" to="/"><img className="w-32 mt-0 inline-block" src={logo} alt="logo" /></Link>
             </section>
             <section className="order-last hidden md:block">
             <button className="bg-transparent text-md text-blue my-1 py-2 px-4" onClick={() => signup()}>Sign Up</button>

@@ -10,6 +10,7 @@ import Dashboard from './components/Dashboard';
 import Navigation from './components/Navigation'
 import { useNavigate } from 'react-router-dom'
 import Userfront from '@userfront/react'
+import Footer from './components/Footer';
 
 
 Userfront.init('5nxgp7yb')
@@ -40,19 +41,20 @@ function App() {
   }
 
   return (
-      <div className="bg-slate-50">
+      <div className="bg-blue-100 font-sans">
           <Navigation logout={<LogoutButton />} login={logInUser} signup={signUpUser} />
-          <div className="container min-h-screen">
+          <div className="min-h-screen">
               <Routes>
                 <Route path="/" element={<Home />} />
-                <Route path="login" element={<div className="mt-40"><LoginForm /></div>} />
-                <Route path="register" element={<div className="mt-40"><SignupForm /></div>} />
+                <Route path="login" element={<div className="mt-18 md:mt-24"><LoginForm /></div>} />
+                <Route path="register" element={<div className="mt-18 md:mt-24"><SignupForm /></div>} />
                 <Route path="/user" element={<UserComponent/>} />
                 <Route path="/unpaidbills" element={<UnpaidBillsList/>} />
                 <Route path="/paidbills" element={<PaidBillsList/>} />
                 <Route path="/dashboard" element={<Dashboard/>} />
               </Routes>
           </div>
+          <Footer />
       </div>
   );
 }
