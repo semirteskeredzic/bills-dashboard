@@ -13,7 +13,7 @@ const Home = () => {
                 <section className="self-center w-2/5  md:w-1/5">
                     <div className="text-center pt-[6rem] md:pt-[10rem] lg:pt-[12rem]">
                         <Link className="shadow-md m-0 m-auto w-2/3 block p-3 text-center text-white bg-blue-500 hover:bg-blue-600 no-underline rounded-3xl tracking-wide" to="/register">Sign Up</Link>
-                        <span className=" m-0 m-auto pt-5 text-xs text-center">Have an account? <Link className="no-underline drop-shadow-lg text-blue-300" to="/login">Login</Link></span>
+                        <span className=" m-0 m-auto mt-5 text-xs text-center">Have an account? <Link className="no-underline drop-shadow-lg text-blue-300" to="/login">Login</Link></span>
                     </div>
                 </section>
             </div>
