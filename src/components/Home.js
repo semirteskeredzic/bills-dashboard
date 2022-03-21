@@ -1,7 +1,17 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import Userfront from '@userfront/react'
+import { useNavigate } from 'react-router-dom'
 
 const Home = () => {
+
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        if(Userfront.tokens.accessToken) {
+            navigate('/dashboard')
+        }
+    },[])
 
     return (
         <div className="w-full h-[18rem] md:h-[32rem]">

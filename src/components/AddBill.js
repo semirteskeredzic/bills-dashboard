@@ -5,7 +5,7 @@ import Userfront from '@userfront/react'
 import ReactMonthPickerInput from 'react-month-picker-input'
 import 'react-month-picker-input/dist/react-month-picker-input.css'
 
-const AddBill = ({returnToDefault, refetch}) => {
+const AddBill = ({returnToDefault, refetch, refetchDue}) => {
 
     const [name, setName] = useState()
     const [amount, setAmount] = useState()
@@ -29,7 +29,7 @@ const AddBill = ({returnToDefault, refetch}) => {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${Userfront.tokens.accessToken}`
         }}).then(res => res.status === 200 ? 
-            (() => setName(''), setLoading(false)) : alert('ERR')).finally(() => refetch(), returnToDefault())
+            (() => setName(''), setLoading(false)) : alert('ERR')).finally(() => refetch(), refetchDue(), returnToDefault())
         } catch(err) {
             console.error(err)
         }

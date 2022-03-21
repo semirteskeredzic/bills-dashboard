@@ -17,7 +17,7 @@ const UnpaidBillsWidget = ({data, error,  refetchunpaid, refetchpaid}) => {
         axios.put(`${process.env.REACT_APP_API_URL}/bills/${prop._id}`, {paid: true}, {headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${Userfront.tokens.accessToken}`
-        }}).then(res => res.status === 200 ? (console.log('success',res), setPayLoading(false)): console.log(res)).catch(err => console.log(err)).finally(refetchunpaid(), refetchpaid())
+        }}).then(res => res.ok ? console.log('success',res) : console.log(res)).catch(err => console.log(err)).finally(refetchunpaid(), refetchpaid())
     }
 
     const deleteBill = (prop) => {
@@ -45,7 +45,7 @@ const UnpaidBillsWidget = ({data, error,  refetchunpaid, refetchpaid}) => {
                    <li>Amount: {formatter.format(bill.amount)}</li>
                    <div className="absolute top-1/3 right-2 flex">
                     <button className="pr-2" onClick={() => deleteModal(bill)}><TrashIcon className="w-7 self-center hover:text-blue-700" /></button>
-                    <button className="pr-2"><PencilIcon className="w-7 self-center hover:text-blue-700" /></button>
+                    <button className="pr-2" disabled><PencilIcon className="w-7 self-center text-gray-400" /></button>
                      <button className="bg-blue-500 hover:bg-darken text-white p-2 rounded shadow-sm hover:bg-blue-600" onClick={() => payBill(bill)}>
                         {payLoading ? 
                             <Spinner animation="border" role="status">
