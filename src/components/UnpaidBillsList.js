@@ -42,7 +42,7 @@ const UnpaidBillsList = () => {
             </div> 
             <h1>Unpaid bills</h1>
             {data?.map(bill => (
-               <ul className="rounded shadow-sm border border-gray-200 p-2 my-5 relative" key={bill._id}>
+               <ul className="rounded shadow-sm border border-gray-200 p-2 my-5 relative bg-white" key={bill._id}>
                    <li>Name: {bill.name}</li>
                    <li>Month: {bill.month}</li>
                    <li>Year: {bill.year}</li>
