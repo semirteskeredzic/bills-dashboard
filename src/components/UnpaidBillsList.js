@@ -6,6 +6,7 @@ import { PencilIcon, RefreshIcon, TrashIcon } from '@heroicons/react/outline'
 import { useNavigate } from 'react-router-dom'
 import { formatter } from '../currency'
 import Userfront from '@userfront/react'
+import { formatDate, currentDate } from '../helpers/date'
 
 const UnpaidBillsList = () => {
 
@@ -28,7 +29,7 @@ const UnpaidBillsList = () => {
 
     const payBill = (prop) => {
         setPayLoading(true)
-        axios.put(`${process.env.REACT_APP_API_URL}/bills/${prop._id}`, {paid: true}, {headers: {
+        axios.put(`${process.env.REACT_APP_API_URL}/bills/${prop._id}`, {paid: true, dateOfPayment: currentDate}, {headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${Userfront.tokens.accessToken}`
         }}).then(res => res.status === 200 ? (console.log('success',res), setPayLoading(false), refetch()): console.log(res)).catch(err => console.log(err))
@@ -47,6 +48,7 @@ const UnpaidBillsList = () => {
                    <li>Month: {bill.month}</li>
                    <li>Year: {bill.year}</li>
                    <li>Amount: {formatter.format(bill.amount)}</li>
+                   <li>Arrived at: {formatDate(bill.dateOfArrival)}</li>
                    <div className="absolute top-1/3 right-2 flex">
                     <button className="pr-2"><TrashIcon className="w-7 self-center hover:text-blue-700" /></button>
                     <button className="pr-2"><PencilIcon className="w-7 self-center hover:text-blue-700" /></button>
