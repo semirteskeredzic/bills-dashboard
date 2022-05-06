@@ -94,7 +94,7 @@ const Dashboard = () => {
                 <UtilityCompanyWidget refetch={refetchCompanies} />
                 </section>
                 <section className="w-full flex md:h-[33.75rem] bg-white rounded-md shadow-md">
-                    <UtilityCompanyList data={companyListData} loading={companyListLoading} />
+                    <UtilityCompanyList data={companyListData} loading={companyListLoading} refetch={refetchCompanies} />
                 </section>
                 </>
                 : null}

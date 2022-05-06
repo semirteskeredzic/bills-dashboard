@@ -11,6 +11,8 @@ import Navigation from './components/Navigation'
 import { useNavigate } from 'react-router-dom'
 import Userfront from '@userfront/react'
 import Footer from './components/Footer';
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faBolt, faFireFlameSimple, faBarcode, faFaucet, faDumpster, faPhone, faWifi, faScrewdriverWrench, faTv } from '@fortawesome/free-solid-svg-icons'
 
 Userfront.init('5nxgp7yb')
 
@@ -38,6 +40,8 @@ function App() {
   const signUpUser = () => {
     navigate('/register')
   }
+
+  library.add(faBolt, faFireFlameSimple, faBarcode, faFaucet, faDumpster, faPhone, faWifi, faScrewdriverWrench, faTv)
 
   return (
       <div className="bg-blue-100 font-sans">
