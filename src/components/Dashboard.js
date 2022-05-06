@@ -61,7 +61,7 @@ const Dashboard = () => {
     )
 
         // List of Utility Companies 
-        const [{data: companyListData, loading: companyListLoading}] = useAxios(
+        const [{data: companyListData, loading: companyListLoading}, refetchCompanies] = useAxios(
             {
                 url: `${process.env.REACT_APP_API_URL}/utilitycompanies`,
                 headers: {
@@ -91,7 +91,7 @@ const Dashboard = () => {
                 {currentTenant === '5nxgp7yb' ?
                 <>
                 <section className="w-full flex md:h-[33.75rem] bg-white rounded-md shadow-md">
-                <UtilityCompanyWidget />
+                <UtilityCompanyWidget refetch={refetchCompanies} />
                 </section>
                 <section className="w-full flex md:h-[33.75rem] bg-white rounded-md shadow-md">
                     <UtilityCompanyList data={companyListData} loading={companyListLoading} />

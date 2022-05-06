@@ -2,9 +2,10 @@ import React, { useState } from 'react'
 import axios from 'axios'
 import Spinner from 'react-bootstrap/esm/Spinner'
 import Userfront from '@userfront/react'
+import { countries } from '../helpers/countries'
 // import { RefreshIcon } from '@heroicons/react/outline'
 
-const UtilityCompanyWidget = () => {
+const UtilityCompanyWidget = ({refetch}) => {
 
     const [loading, setLoading] = useState(false)
     const [name, setName] = useState('')
@@ -13,6 +14,7 @@ const UtilityCompanyWidget = () => {
     const [description, setDescription] = useState('')
     const [city, setCity] = useState('')
     const [country, setCountry] = useState('')
+    const [icon, setIcon] = useState('')
     const [phone, setPhone] = useState('')
     const [email, setEmail] = useState('')
     const [website, setWebsite] = useState('')
@@ -37,7 +39,7 @@ const UtilityCompanyWidget = () => {
                 'Authorization': `Bearer ${Userfront.tokens.accessToken}`
         }}).then(res => {
             if (res.status === 200) {
-                console.log(res)
+                refetch()
             }
         }).finally(() => setLoading(false), setName(''), setType(''), setAddress(''), setDescription(''), setCity(''), setCountry(''), setPhone(''), setEmail(''), setWebsite(''))}
         catch(err) {
@@ -78,7 +80,11 @@ const UtilityCompanyWidget = () => {
                     </div>
                     <div className="w-1/2 p-2">
                         <label htmlFor="country">Country</label>
-                        <input type="text" name="country" value={country} onChange={(e) => setCountry(e.target.value)} id="country" className="w-full border border-gray-200 p-2 rounded-lg" />
+                        <select value={country} onChange={(e) => setCountry(e.target.value)} id="country" name="country" className="w-full border border-gray-200 p-2 rounded-lg h-[42px]">
+                            {countries.map(country => {
+                                return <option key={country.code} value={country.name}>{country.name}</option>
+                            })}
+                        </select>
                     </div>
                 </div>
                 <div className="flex flex-wrap">
@@ -96,10 +102,14 @@ const UtilityCompanyWidget = () => {
                         <label htmlFor="website">Website</label>
                         <input type="text" name="website" value={website} onChange={(e) => setWebsite(e.target.value)} id="website" className="w-full border border-gray-200 p-2 rounded-lg" />
                     </div>
+                    <div className="w-1/2 p-2">
+                        <label htmlFor="icon">Icon</label>
+                        <input type="text" name="icon" value={icon} onChange={(e) => setIcon(e.target.value)} id="icon" className="w-full border border-gray-200 p-2 rounded-lg" />
+                    </div>
                 </div>
                 <div className="flex flex-wrap">
                     <div className="w-1/2 p-2">
-                        <button className="my-4 py-2 px-4 right-9 uppercase bottom-0 absolute bg-blue-700 rounded-lg shadow-sm hover:bg-blue-500 text-white">
+                        <button className="my-4 py-2 px-4 right-9 uppercase bottom-0 bg-blue-700 rounded-lg shadow-sm hover:bg-blue-500 text-white">
                             {loading ? <Spinner animation="border" variant="primary" /> : 'Create'}
                         </button>
                     </div>
