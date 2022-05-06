@@ -6,8 +6,12 @@ import Userfront from '@userfront/react'
 import useAxios from 'axios-hooks'
 import Spinner from 'react-bootstrap/esm/Spinner'
 import BillStatsWidget from './BillStatsWidget'
+import UtilityCompanyWidget from './UtilityCompanyWidget'
+import UtilityCompanyList from './UtilityCompaniesList'
 
 const Dashboard = () => {
+
+    const currentTenant = Userfront.user.tenantId
 
     // Unpaid Bills widget
 
@@ -56,6 +60,17 @@ const Dashboard = () => {
         },
     )
 
+        // List of Utility Companies 
+        const [{data: companyListData, loading: companyListLoading}] = useAxios(
+            {
+                url: `${process.env.REACT_APP_API_URL}/utilitycompanies`,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${Userfront.tokens.accessToken}`
+                }
+            },
+        )
+
     return (
         <div className="mt-10 pb-11">
          {Userfront.tokens.accessToken 
@@ -73,6 +88,16 @@ const Dashboard = () => {
                 <section className="w-full flex md:h-[33.75rem] bg-white rounded-md shadow-md">
                 {dueLoading || totalPaidLoading ? <Spinner className="m-0 m-auto" animation="border" role="status" /> : <BillStatsWidget data={dueData} data2={totalPaidData} />}
                 </section>
+                {currentTenant === '5nxgp7yb' ?
+                <>
+                <section className="w-full flex md:h-[33.75rem] bg-white rounded-md shadow-md">
+                <UtilityCompanyWidget />
+                </section>
+                <section className="w-full flex md:h-[33.75rem] bg-white rounded-md shadow-md">
+                    <UtilityCompanyList data={companyListData} loading={companyListLoading} />
+                </section>
+                </>
+                : null}
             </div>
             :
             <div>

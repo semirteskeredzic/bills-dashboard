@@ -12,7 +12,6 @@ import { useNavigate } from 'react-router-dom'
 import Userfront from '@userfront/react'
 import Footer from './components/Footer';
 
-
 Userfront.init('5nxgp7yb')
 
 function App() {
