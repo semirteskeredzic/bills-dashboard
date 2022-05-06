@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import { PencilIcon, RefreshIcon, TrashIcon, XIcon } from '@heroicons/react/outline'
 import { formatter } from '../currency'
 import Userfront from '@userfront/react'
+import { formatDate } from '../helpers/date'
 
 const PaidBillsList = () => {
 
@@ -52,6 +53,8 @@ const PaidBillsList = () => {
                    <li>Month: {bill.month}</li>
                    <li>Year: {bill.year}</li>
                    <li>Amount: {!isNaN(bill.amount) ? formatter.format(bill.amount) : 'Not a number'}</li>
+                   <li>Arrived at: {formatDate(bill.dateOfArrival)}</li>
+                   <li>Paid at: {formatDate(bill.dateOfPayment)}</li>
                    <div className="right-0 absolute top-1/3">
                         <button className="pr-2" onClick={() => deleteModal(bill)} ><TrashIcon className="w-7 self-center hover:text-blue-700" /></button>
                         <button className="pr-2" disabled><PencilIcon className="w-7 self-center text-gray-400" /></button>
