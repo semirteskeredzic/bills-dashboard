@@ -1,0 +1,15 @@
+export const utilityTypes = [
+    {type: 'Electricity', icon: 'bolt'},
+    {type: 'Gas', icon: 'fire-flame-simple'},
+    {type: 'Central Heating', icon: 'barcode'},
+    {type: 'Water', icon: 'faucet'},
+    {type: 'Waste Disposal', icon: 'dumpster'},
+    {type: 'Telephone', icon: 'phone'},
+    {type: 'Internet', icon: 'wifi'},
+    {type: 'Upkeep', icon: 'screwdriver-wrench'},
+    {type: 'Tv', icon: 'tv'},
+    {type: 'Cable', icon: 'tv'},
+    {type: 'Cable/Phone', icon: 'tv'},
+    {type: 'Cable/Internet', icon: 'tv'},
+    {type: 'Cable/Internet/Phone', icon: 'tv'},
+]
