@@ -49,7 +49,8 @@ const Dashboard = () => {
         },
     )
 
-    // Total Paid 
+    // Total Paid
+
     const [{data: totalPaidData, loading: totalPaidLoading}] = useAxios(
         {
             url: `${process.env.REACT_APP_API_URL}/paidbillstotal`,
@@ -60,16 +61,17 @@ const Dashboard = () => {
         },
     )
 
-        // List of Utility Companies 
-        const [{data: companyListData, loading: companyListLoading}, refetchCompanies] = useAxios(
-            {
-                url: `${process.env.REACT_APP_API_URL}/utilitycompanies`,
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${Userfront.tokens.accessToken}`
-                }
-            },
-        )
+    // List of Utility Companies
+
+    const [{data: companyListData, loading: companyListLoading}, refetchCompanies] = useAxios(
+        {
+            url: `${process.env.REACT_APP_API_URL}/utilitycompanies`,
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${Userfront.tokens.accessToken}`
+            }
+        },
+    )
 
     return (
         <div className="mt-10 pb-11">
@@ -80,7 +82,7 @@ const Dashboard = () => {
                 <CreateBill refetchunpaid={unpaidRefetch} refetchDue={dueRefetch} />
                 </section>
                 <section className="w-full flex md:h-[33.75rem] bg-white rounded-md shadow-md">
-                {unpaidLoading ? <Spinner className="m-0 m-auto" animation="border" role="status" /> : <UnpaidBillsWidget data={unpaidData} error={unpaidError} refetchunpaid={unpaidRefetch} refetchpaid={paidRefetch} />}
+                {unpaidLoading ? <Spinner className="m-0 m-auto" animation="border" role="status" /> : <UnpaidBillsWidget data={unpaidData} companyData={companyListData} error={unpaidError} refetchunpaid={unpaidRefetch} refetchpaid={paidRefetch} />}
                 </section>
                 <section className="w-full flex md:h-[33.75rem] bg-white rounded-md shadow-md">
                 {paidLoading ? <Spinner className="m-0 m-auto" animation="border" role="status" /> : <PaidBillsWidget data={paidData} error={paidError} refetchpaid={paidRefetch}  />}

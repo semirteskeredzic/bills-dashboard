@@ -1,17 +1,34 @@
-import React, {useState} from 'react'
+import React, {useState, useRef} from 'react'
 import axios from 'axios'
 import Spinner from 'react-bootstrap/esm/Spinner'
-import { PencilIcon, RefreshIcon, TrashIcon, XIcon } from '@heroicons/react/outline'
+import { DotsVerticalIcon, RefreshIcon, XIcon } from '@heroicons/react/outline'
 import { Link } from 'react-router-dom'
 import { formatter } from '../currency'
 import Userfront from '@userfront/react'
 import { formatDate, currentDate } from '../helpers/date'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import useOutsideClick from '../helpers/useOutsideClick'
 
-const UnpaidBillsWidget = ({data, error,  refetchunpaid, refetchpaid}) => {
+
+const UnpaidBillsWidget = ({data, error, companyData,  refetchunpaid, refetchpaid}) => {
 
     const [payLoading, setPayLoading] = useState(false)
     const [modalDelete, setModalDelete] = useState(false)
     const [currentItemForDeletion, setCurrentItemForDeletion] = useState()
+    const [smallModal, setSmallModal] = useState(false)
+
+    const ref = useRef()
+    const modalRef = useRef()
+
+    useOutsideClick(ref, () => {
+        setSmallModal(!smallModal)
+      });
+
+    useOutsideClick(modalRef, () => {
+        if(modalDelete) {
+            setModalDelete(false)
+        }
+    })
     
     const payBill = (prop) => {
         setPayLoading(true)
@@ -40,15 +57,33 @@ const UnpaidBillsWidget = ({data, error,  refetchunpaid, refetchpaid}) => {
             <h1>Unpaid Bills</h1>
             {data?.slice(0,2).map(bill => (
                <ul className="rounded shadow-sm border border-gray-200 p-2 my-5 relative" key={bill._id}>
-                   <li>Name: {bill.name}</li>
-                   <li>Month: {bill.month}</li>
-                   <li>Year: {bill.year}</li>
-                   <li>Amount: {formatter.format(bill.amount)}</li>
-                   <li>Arrived At: {formatDate(bill.dateOfArrival)}</li>
-                   <div className="absolute top-1/3 right-2 flex">
-                    <button className="pr-2" onClick={() => deleteModal(bill)}><TrashIcon className="w-7 self-center hover:text-blue-700" /></button>
-                    <button className="pr-2" disabled><PencilIcon className="w-7 self-center text-gray-400" /></button>
-                     <button className="bg-blue-500 hover:bg-darken text-white p-2 rounded shadow-sm hover:bg-blue-600" onClick={() => payBill(bill)}>
+                   {companyData?.map(company => (
+                       company._id === bill.utilityCompany ? 
+                       <div key={company._id}>
+                           <FontAwesomeIcon icon={`${company.icon}`} className="w-8 h-8 inline-block" />
+                            <h1 className="inline-block px-4 align-super text-2xl">{company.name}</h1>
+                       </div> 
+                       : null
+                   ))}
+                   <li className="pt-2 text-lg">Period: {bill.month}/{bill.year}</li>
+                   <li className="text-lg">Amount: {formatter.format(bill.amount)}</li>
+                   <li className="text-gray-400 text-xs pt-2">Arrived At: {formatDate(bill.dateOfArrival)}</li>
+                   <div className="absolute top-2 right-2 flex">
+                        <button onClick={() => setSmallModal(!smallModal)}><DotsVerticalIcon className='w-6'/></button>
+                    </div>
+                    {smallModal ? 
+                        <div className='shadow-sm border-2 top-6 right-4 absolute bg-white flex-col z-10 flex' ref={ref}>
+                            <button className="pr-2 text-left hover:bg-slate-100 py-2 px-4" disabled>Edit</button>
+                            <button className="pr-2 text-left hover:bg-slate-100 py-2 px-4" onClick={() => {
+                                deleteModal(bill); 
+                                setSmallModal(!smallModal)
+                            }}>Delete</button>
+                        </div>
+                        :
+                        null
+                    }
+                    <div className="absolute bottom-2 right-2 flex">
+                    <button className="bg-blue-500 hover:bg-darken text-white p-2 rounded shadow-sm hover:bg-blue-600" onClick={() => payBill(bill)}>
                         {payLoading ? 
                             <Spinner animation="border" role="status">
                             <span className="visually-hidden">Paying...</span>
@@ -56,8 +91,7 @@ const UnpaidBillsWidget = ({data, error,  refetchunpaid, refetchpaid}) => {
                         :
                             'Pay Bill'
                         }
-                    </button>
-                    
+                        </button>
                     </div>
                </ul>
            ))}
@@ -67,7 +101,7 @@ const UnpaidBillsWidget = ({data, error,  refetchunpaid, refetchpaid}) => {
 
            {/* Delete Product Modal */}
             <div className={` ${!modalDelete ? 'hidden' : 'visible'} overflow-y-auto overflow-x-hidden fixed right-0 left-0 top-4 z-50 justify-center items-center md:inset-0 h-modal sm:h-full`} id="popup-modal">
-                <div className="relative px-4 w-full max-w-md h-full md:h-auto m-0 m-auto">
+                <div ref={modalRef} className="relative px-4 w-full max-w-md h-full md:h-auto m-0 m-auto">
                     {/* Modal content */}
                     <div className="relative bg-white rounded-lg shadow dark:bg-gray-700 mt-[50%]">
                         {/* Modal header */}
@@ -81,7 +115,7 @@ const UnpaidBillsWidget = ({data, error,  refetchunpaid, refetchpaid}) => {
                             <svg className="mx-auto mb-4 w-14 h-14 text-gray-400 dark:text-gray-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                             <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Are you sure you want to delete this bill?</h3>
                             <div className="flex flex-row justify-evenly">
-                            <button type="button" className="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:ring-gray-300 rounded-lg border border-gray-200 text-sm font-medium px-3 py-2 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-slate-200 dark:hover:bg-gray-600">No, cancel</button>
+                            <button type="button" className="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:ring-gray-300 rounded-lg border border-gray-200 text-sm font-medium px-3 py-2 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-slate-200 dark:hover:bg-gray-600" onClick={() => setModalDelete(false)}>No, cancel</button>
                             <button onClick={() => deleteBill(currentItemForDeletion)} type="button" className="text-white bg-blue-600 hover:bg-blue-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm inline-flex items-center px-3 py-2 text-center mr-2">
                                 Yes, I'm sure
                             </button>
