@@ -16,6 +16,7 @@ const UnpaidBillsWidget = ({data, error, companyData,  refetchunpaid, refetchpai
     const [modalDelete, setModalDelete] = useState(false)
     const [currentItemForDeletion, setCurrentItemForDeletion] = useState()
     const [smallModal, setSmallModal] = useState(false)
+    const [currentItemId, setCurrentItemId] = useState()
 
     const ref = useRef()
     const modalRef = useRef()
@@ -69,9 +70,12 @@ const UnpaidBillsWidget = ({data, error, companyData,  refetchunpaid, refetchpai
                    <li className="text-lg">Amount: {formatter.format(bill.amount)}</li>
                    <li className="text-gray-400 text-xs pt-2">Arrived At: {formatDate(bill.dateOfArrival)}</li>
                    <div className="absolute top-2 right-2 flex">
-                        <button onClick={() => setSmallModal(!smallModal)}><DotsVerticalIcon className='w-6'/></button>
+                        <button onClick={() => {
+                            setSmallModal(!smallModal)
+                            setCurrentItemId(bill._id)
+                        }}><DotsVerticalIcon className='w-6'/></button>
                     </div>
-                    {smallModal ? 
+                    {smallModal && currentItemId === bill._id ? 
                         <div className='shadow-sm border-2 top-6 right-4 absolute bg-white flex-col z-10 flex' ref={ref}>
                             <button className="pr-2 text-left hover:bg-slate-100 py-2 px-4" disabled>Edit</button>
                             <button className="pr-2 text-left hover:bg-slate-100 py-2 px-4" onClick={() => {
