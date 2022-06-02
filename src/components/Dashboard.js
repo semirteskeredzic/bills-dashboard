@@ -79,7 +79,7 @@ const Dashboard = () => {
             ? 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 px-10">
                 <section className="w-full md:h-[33.75rem] bg-white rounded-md shadow-md" >
-                <CreateBill refetchunpaid={unpaidRefetch} refetchDue={dueRefetch} />
+                <CreateBill refetchunpaid={unpaidRefetch} refetchDue={dueRefetch} companyData={companyListData} />
                 </section>
                 <section className="w-full flex md:h-[33.75rem] bg-white rounded-md shadow-md">
                 {unpaidLoading ? <Spinner className="m-0 m-auto" animation="border" role="status" /> : <UnpaidBillsWidget data={unpaidData} companyData={companyListData} error={unpaidError} refetchunpaid={unpaidRefetch} refetchpaid={paidRefetch} />}
