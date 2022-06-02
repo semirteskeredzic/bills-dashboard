@@ -65,8 +65,8 @@ const UnpaidBillsWidget = ({data, error, companyData,  refetchunpaid, refetchpai
                        </div> 
                        : null
                    ))}
-                   <li className="pt-2">Period: {bill.month}/{bill.year}</li>
-                   <li>Amount: {formatter.format(bill.amount)}</li>
+                   <li className="pt-2 text-lg">Period: {bill.month}/{bill.year}</li>
+                   <li className="text-lg">Amount: {formatter.format(bill.amount)}</li>
                    <li className="text-gray-400 text-xs pt-2">Arrived At: {formatDate(bill.dateOfArrival)}</li>
                    <div className="absolute top-2 right-2 flex">
                         <button onClick={() => setSmallModal(!smallModal)}><DotsVerticalIcon className='w-6'/></button>
