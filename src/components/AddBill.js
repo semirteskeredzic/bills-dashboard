@@ -42,19 +42,21 @@ const AddBill = ({returnToDefault, refetch, refetchDue, companies}) => {
 
     return(
         <div>
-            <div className="m-4 flex flex-row justify-between w-auto">
+            <div className="my-4 md:m-4 flex flex-row justify-between w-auto">
             <h4 className="inline-block">Period</h4>
-            <ReactMonthPickerInput
-                inputProps={{className: 'w-full'}}
-                year={new Date().getFullYear()}
-                month={new Date().getMonth()-1}
-                onChange={function(maskedValue, selectedYear, selectedMonth) {
-                    setMonth(parseInt(selectedMonth+1))
-                    setYear(parseInt(selectedYear))
-                }}
-                />
+            <div className="w-1/2">
+                <ReactMonthPickerInput
+                    inputProps={{className: 'w-full'}}
+                    year={new Date().getFullYear()}
+                    month={new Date().getMonth()-1}
+                    onChange={function(maskedValue, selectedYear, selectedMonth) {
+                        setMonth(parseInt(selectedMonth+1))
+                        setYear(parseInt(selectedYear))
+                    }}
+                    />
             </div>
-            <form className="bg-white rounded px-8 pb-4 mb-4">
+            </div>
+            <form className="bg-white rounded md:px-8 pb-4 mb-4">
             <label className="font-bold mb-2 text-gray-800">Utility Company</label>
                 <select value={utilCompany} onChange={(e) => {
                     setUtilCompany(e.target.value)

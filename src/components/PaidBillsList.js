@@ -39,6 +39,8 @@ const PaidBillsList = () => {
     if (loading) return <Spinner animation="border" role="status" />
     if (error) return <div>Error</div>
 
+    const billsData = Object.entries(data).sort().reverse()
+
     return(
         <>
         <div className="p-3 relative">
@@ -47,19 +49,26 @@ const PaidBillsList = () => {
             <button className="bg-blue-500 shadow-sm rounded hover:bg-blue-600 text-white my-4 py-2 px-4" onClick={() => navigate(-1)}>Back</button>
             </div> 
             <h1>Paid bills</h1>
-            {data?.map(bill => (
-               <ul className="relative rounded shadow-sm border border-gray-200 p-2 my-5 bg-white" key={bill._id}>
-                   <li>Name: {bill.name}</li>
-                   <li>Month: {bill.month}</li>
-                   <li>Year: {bill.year}</li>
-                   <li>Amount: {!isNaN(bill.amount) ? formatter.format(bill.amount) : 'Not a number'}</li>
-                   <li>Arrived at: {formatDate(bill.dateOfArrival)}</li>
-                   <li>Paid at: {formatDate(bill.dateOfPayment)}</li>
-                   <div className="right-0 absolute top-1/3">
-                        <button className="pr-2" onClick={() => deleteModal(bill)} ><TrashIcon className="w-7 self-center hover:text-blue-700" /></button>
-                        <button className="pr-2" disabled><PencilIcon className="w-7 self-center text-gray-400" /></button>
-                   </div>
-               </ul>
+            {Object.values(billsData)?.map(billSection => (
+                <>
+                <h1>{billSection[0]}</h1>
+                {Object.values(billSection[1]).map(singlebill => (
+                    <>
+                    <ul className="relative rounded shadow-sm border border-gray-200 p-2 my-5 bg-white" key={singlebill._id}>
+                        <li>Name: {singlebill.name}</li>
+                        <li>Month: {singlebill.month}</li>
+                        <li>Year: {singlebill.year}</li>
+                        <li>Amount: {!isNaN(singlebill.amount) ? formatter.format(singlebill.amount) : 'Not a number'}</li>
+                        <li>Arrived at: {formatDate(singlebill.dateOfArrival)}</li>
+                        <li>Paid at: {formatDate(singlebill.dateOfPayment)}</li>
+                        <div className="right-0 absolute top-1/3">
+                            <button className="pr-2" onClick={() => deleteModal(singlebill)} ><TrashIcon className="w-7 self-center hover:text-blue-700" /></button>
+                            <button className="pr-2" disabled><PencilIcon className="w-7 self-center text-gray-400" /></button>
+                        </div>
+                    </ul>
+                    </>
+                ))}
+               </>
            ))}
         </div>
         {/* Delete Product Modal */}

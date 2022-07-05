@@ -51,13 +51,17 @@ const UnpaidBillsWidget = ({data, error, companyData,  refetchunpaid, refetchpai
         setModalDelete(!modalDelete)
     }
 
+    const billsData = Object.entries(data).sort().reverse()
 
     return (
         <div className="p-4 h-104 relative w-full overflow-auto">
             <button className="my-4 py-2 px-4 right-2 top-0 absolute" onClick={refetchunpaid}><RefreshIcon className="w-7 hover:text-blue-700" /></button>
             <h1>Unpaid Bills</h1>
-            {data?.slice(0,2).map(bill => (
-               <ul className="rounded shadow-sm border border-gray-200 p-2 my-5 relative" key={bill._id}>
+            {Object.values(billsData)?.map(billSection => (
+                <>
+                {Object.values(billSection[1]).map(bill => (
+                
+                <ul className="rounded shadow-sm border border-gray-200 p-2 my-5 relative" key={bill._id}>
                    {companyData?.map(company => (
                        company._id === bill.utilityCompany ? 
                        <div key={company._id}>
@@ -97,7 +101,8 @@ const UnpaidBillsWidget = ({data, error, companyData,  refetchunpaid, refetchpai
                         }
                         </button>
                     </div>
-               </ul>
+               </ul>))}
+               </>
            ))}
            <div className="text-center">
            {data?.length > 2 ? <Link className="no-underline text-center text-base text-black hover:text-blue-700" to="/unpaidbills">See More</Link> : null}
