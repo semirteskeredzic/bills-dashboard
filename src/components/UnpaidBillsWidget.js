@@ -8,6 +8,7 @@ import Userfront from '@userfront/react'
 import { formatDate, currentDate } from '../helpers/date'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import useOutsideClick from '../helpers/useOutsideClick'
+import ChangePercentage from './ChangePercentage'
 
 
 const UnpaidBillsWidget = ({data, error, companyData,  refetchunpaid, refetchpaid}) => {
@@ -51,59 +52,86 @@ const UnpaidBillsWidget = ({data, error, companyData,  refetchunpaid, refetchpai
         setModalDelete(!modalDelete)
     }
 
-    const billsData = Object.entries(data).sort().reverse()
+
+
+    // const [{data: previousData, loading: previousLoading, error: previousError}] = useAxios(
+    //     {
+    //         url: `${process.env.REACT_APP_API_URL}/getPreviousBillCompare?utilityCompany=6278ebe134362250ab50b23a&month=6&year=2022`,
+    //         method: 'GET',
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //             'Authorization': `Bearer ${Userfront.tokens.accessToken}`
+    //         }
+    //     },
+    // )
+
+ 
+    
+
+    // const billsData = Object.entries(data).sort().reverse()
+
+    // Approach when grouped by year from the server
+    // {Object.values(billsData)?.map(billSection => (
+    //     <>
+    //     {Object.values(billSection[1]).map(bill => (
+    //     <ul>
+    //        {companyData?.map(company => (
+    //            company._id === bill.utilityCompany ? 
+    //            <div key={company._id}>
+    //                <FontAwesomeIcon icon={`${company.icon}`} className="w-8 h-8 inline-block" />
+    //                 <h1 className="inline-block px-4 align-super text-2xl">{company.name}</h1>
+    //            </div> 
+    //            : null
+    //        ))}
 
     return (
         <div className="p-4 h-104 relative w-full overflow-auto">
             <button className="my-4 py-2 px-4 right-2 top-0 absolute" onClick={refetchunpaid}><RefreshIcon className="w-7 hover:text-blue-700" /></button>
             <h1>Unpaid Bills</h1>
-            {Object.values(billsData)?.map(billSection => (
-                <>
-                {Object.values(billSection[1]).map(bill => (
-                
-                <ul className="rounded shadow-sm border border-gray-200 p-2 my-5 relative" key={bill._id}>
-                   {companyData?.map(company => (
-                       company._id === bill.utilityCompany ? 
-                       <div key={company._id}>
-                           <FontAwesomeIcon icon={`${company.icon}`} className="w-8 h-8 inline-block" />
-                            <h1 className="inline-block px-4 align-super text-2xl">{company.name}</h1>
-                       </div> 
-                       : null
-                   ))}
-                   <li className="pt-2 text-lg">Period: {bill.month}/{bill.year}</li>
-                   <li className="text-lg">Amount: {formatter.format(bill.amount)}</li>
-                   <li className="text-gray-400 text-xs pt-2">Arrived At: {formatDate(bill.dateOfArrival)}</li>
-                   <div className="absolute top-2 right-2 flex">
-                        <button onClick={() => {
-                            setSmallModal(!smallModal)
-                            setCurrentItemId(bill._id)
-                        }}><DotsVerticalIcon className='w-6'/></button>
-                    </div>
-                    {smallModal && currentItemId === bill._id ? 
-                        <div className='shadow-sm border-2 top-6 right-4 absolute bg-white flex-col z-10 flex' ref={ref}>
-                            <button className="pr-2 text-left hover:bg-slate-100 py-2 px-4" disabled>Edit</button>
-                            <button className="pr-2 text-left hover:bg-slate-100 py-2 px-4" onClick={() => {
-                                deleteModal(bill); 
+                {data?.map(bill => (
+                    <ul className="rounded shadow-sm border border-gray-200 p-2 my-5 relative" key={bill._id}>
+                    {companyData?.map(company => (
+                        company._id === bill.utilityCompany ? 
+                        <div key={company._id}>
+                            <FontAwesomeIcon icon={`${company.icon}`} className="w-8 h-8 inline-block" />
+                                <h1 className="inline-block px-4 align-super text-2xl">{company.name}</h1>
+                        </div> 
+                        : null
+                    ))}
+                    <ChangePercentage bill={bill} />
+                    <li className="pt-2 text-lg">Period: {bill.month}/{bill.year}</li>
+                    <li className="text-lg">Amount: {formatter.format(bill.amount)}</li>
+                    <li className="text-gray-400 text-xs pt-2">Arrived At: {formatDate(bill.dateOfArrival)}</li>
+                    <div className="absolute top-2 right-2 flex">
+                            <button onClick={() => {
                                 setSmallModal(!smallModal)
-                            }}>Delete</button>
+                                setCurrentItemId(bill._id)
+                            }}><DotsVerticalIcon className='w-6'/></button>
                         </div>
-                        :
-                        null
-                    }
-                    <div className="absolute bottom-2 right-2 flex">
-                    <button className="bg-blue-500 hover:bg-darken text-white p-2 rounded shadow-sm hover:bg-blue-600" onClick={() => payBill(bill)}>
-                        {payLoading ? 
-                            <Spinner animation="border" role="status">
-                            <span className="visually-hidden">Paying...</span>
-                            </Spinner>
-                        :
-                            'Pay Bill'
+                        {smallModal && currentItemId === bill._id ? 
+                            <div className='shadow-sm border-2 top-6 right-4 absolute bg-white flex-col z-10 flex' ref={ref}>
+                                <button className="pr-2 text-left hover:bg-slate-100 py-2 px-4" disabled>Edit</button>
+                                <button className="pr-2 text-left hover:bg-slate-100 py-2 px-4" onClick={() => {
+                                    deleteModal(bill); 
+                                    setSmallModal(!smallModal)
+                                }}>Delete</button>
+                            </div>
+                            :
+                            null
                         }
-                        </button>
-                    </div>
-               </ul>))}
-               </>
-           ))}
+                        <div className="absolute bottom-2 right-2 flex">
+                        <button className="bg-blue-500 hover:bg-darken text-white p-2 rounded shadow-sm hover:bg-blue-600" onClick={() => payBill(bill)}>
+                            {payLoading ? 
+                                <Spinner animation="border" role="status">
+                                <span className="visually-hidden">Paying...</span>
+                                </Spinner>
+                            :
+                                'Pay Bill'
+                            }
+                            </button>
+                        </div>
+                    </ul>
+                ))}
            <div className="text-center">
            {data?.length > 2 ? <Link className="no-underline text-center text-base text-black hover:text-blue-700" to="/unpaidbills">See More</Link> : null}
            </div>
@@ -134,7 +162,6 @@ const UnpaidBillsWidget = ({data, error, companyData,  refetchunpaid, refetchpai
                 </div>
             </div>
         </div>
-    )   
-}
+)}
 
 export default UnpaidBillsWidget

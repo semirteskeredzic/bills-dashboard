@@ -18,7 +18,6 @@ Userfront.init('5nxgp7yb')
 
 function App() {
 
-  console.log(process.env.REACT_APP_LOGIN_FORM_TOOLID)
   const navigate = useNavigate()
 
   const LoginForm = Userfront.build({

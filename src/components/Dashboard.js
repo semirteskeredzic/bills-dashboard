@@ -17,7 +17,7 @@ const Dashboard = () => {
 
     const [{data: unpaidData, loading: unpaidLoading, error: unpaidError}, unpaidRefetch] = useAxios(
         {
-            url: `${process.env.REACT_APP_API_URL}/unpaidbills`,
+            url: `${process.env.REACT_APP_API_URL}/unpaidbillswidget`,
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${Userfront.tokens.accessToken}`
